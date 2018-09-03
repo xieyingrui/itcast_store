@@ -6,7 +6,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 import App from './App';
 import router from './router';
 import '@/assets/css/index.css';
+import MyHttp from '@/plugins/MyHttp.js';
 
+//注册MyHttp插件
+Vue.use(MyHttp);
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
