@@ -1,21 +1,50 @@
 <template>
     <div class="login-wrap">
-        <el-form class="login-form" label-position="top" label-width="80px">
+        <el-form class="login-form" label-position="top" label-width="80px" :model="formData">
             <h2>用户登录</h2>
             <el-form-item label="用户名">
-                <el-input></el-input>
+                <el-input v-model="formData.username"></el-input>
             </el-form-item>
             <el-form-item label="密码">
-                <el-input type="password"></el-input>
+                <el-input type="password" v-model="formData.password"></el-input>
             </el-form-item>
-            <el-button class="loginBtn" type="primary">登录</el-button>
+            <el-button class="loginBtn" type="primary" @click="handleLogin">登录</el-button>
         </el-form>
     </div>
 </template>
 
 <script>
+// 1.绑定表单数据
+// 2.给按钮添加点击事件,发送请求
+// 3.登陆成功,返回提示信息,记录token
 export default {
-
+  data() {
+    return {
+      formData: {
+        username: '',
+        password: ''
+      }
+    };
+  },
+  methods: {
+    handleLogin() {
+      this.$http.post('login', this.formData)
+        .then(response => {
+          //  console.log(response);
+          const {meta: {msg, status}} = response.data;
+          if (status === 200) {
+            // 成功
+            this.$message.success(msg);
+          } else {
+            // 失败
+            this.$message.error(msg);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
 };
 </script>
 

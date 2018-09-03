@@ -8,7 +8,7 @@ import router from './router';
 import '@/assets/css/index.css';
 import MyHttp from '@/plugins/MyHttp.js';
 
-//注册MyHttp插件
+// 注册MyHttp插件
 Vue.use(MyHttp);
 Vue.use(ElementUI);
 
