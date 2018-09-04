@@ -1,5 +1,6 @@
 <template>
     <el-container>
+        <!-- 头部 -->
         <el-header>
             <el-row>
                 <el-col :span="4">
@@ -14,7 +15,57 @@
             </el-row>
         </el-header>
         <el-container>
-            <el-aside width="200px">Aside</el-aside>
+            <!-- 侧边栏 -->
+            <el-aside width="200px">
+                <el-menu
+                    :unique-opened="true"
+                    :router="true"
+                    style="height:100%"
+                    default-active="0">
+                    <el-submenu index="1">
+                        <template slot="title">
+                        <i class="el-icon-location"></i>
+                        <span>用户管理</span>
+                        </template>
+                        <el-menu-item index="/users">
+                            <i class="el-icon-menu"></i>
+                            用户列表
+                        </el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="2">
+                        <template slot="title">
+                        <i class="el-icon-location"></i>
+                        <span>权限管理</span>
+                        </template>
+                        <el-menu-item index="/roles">
+                            <i class="el-icon-menu"></i>
+                            角色列表
+                        </el-menu-item>
+                        <el-menu-item index="rights">
+                            <i class="el-icon-menu"></i>
+                            权限列表
+                        </el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="3">
+                        <template slot="title">
+                        <i class="el-icon-location"></i>
+                        <span>商品管理</span>
+                        </template>
+                        <el-menu-item index="2-1">
+                            <i class="el-icon-menu"></i>
+                            商品列表
+                        </el-menu-item>
+                        <el-menu-item index="2-1">
+                            <i class="el-icon-menu"></i>
+                            分类参数
+                        </el-menu-item>
+                        <el-menu-item index="2-1">
+                            <i class="el-icon-menu"></i>
+                            商品分类
+                        </el-menu-item>
+                    </el-submenu>                    
+                </el-menu>
+            </el-aside>
             <el-main>Main</el-main>
         </el-container>
     </el-container>
@@ -33,7 +84,6 @@ export default {
 .el-aside {
     background-color: #D3DCE6;
     color: #333;
-    text-align: center;
   }
 .el-main {
     background-color: #E9EEF3;
