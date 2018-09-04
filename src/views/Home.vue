@@ -10,7 +10,7 @@
                     <span>电商后台管理系统</span>
                 </el-col>
                 <el-col :span="1">
-                    <a href="#" class="loginoutBtn">退出</a>
+                    <a href="#" class="loginoutBtn" @click.prevent="handleLoginout">退出</a>
                 </el-col>
             </el-row>
         </el-header>
@@ -73,7 +73,24 @@
 
 <script>
 export default {
-
+    beforeCreate(){
+        const token =sessionStorage.getItem('token');
+        if(!token){
+            //未登录提示用户
+            this.$message.warning('请先登录');
+            this.$router.push('/login');
+        }
+    },
+    methods:{
+        handleLoginout(){
+            //清除token
+            sessionStorage.clear();
+            //提示退出成功
+            this.$message.success('退出成功');
+            // 跳转到登录页面
+            this.$router.push('/login');
+        }
+    }
 };
 </script>
 
