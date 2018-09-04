@@ -1,10 +1,17 @@
 <template>
     <el-container>
         <el-header>
-            <!-- <el-row>
-                <el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
-                <el-col :span="12"><div class="grid-content bg-purple-light"></div></el-col>
-            </el-row> -->
+            <el-row>
+                <el-col :span="4">
+                    <img src="@/assets/logo.png" alt="">
+                </el-col>
+                <el-col class="middle" :span="19">
+                    <span>电商后台管理系统</span>
+                </el-col>
+                <el-col :span="1">
+                    <a href="#" class="loginoutBtn">退出</a>
+                </el-col>
+            </el-row>
         </el-header>
         <el-container>
             <el-aside width="200px">Aside</el-aside>
@@ -38,5 +45,14 @@ export default {
     color: #333;
     text-align: center;
     line-height: 60px;
+    padding:0;
+}
+.middle{
+    font-size: 24px;
+    color:#fff;
+}
+.loginoutBtn{
+    color:orangered;
+    text-decoration: none;
 }
 </style>
