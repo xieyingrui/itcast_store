@@ -63,34 +63,36 @@
                             <i class="el-icon-menu"></i>
                             商品分类
                         </el-menu-item>
-                    </el-submenu>                    
+                    </el-submenu>
                 </el-menu>
             </el-aside>
-            <el-main>Main</el-main>
+            <el-main>
+                <router-view></router-view>
+            </el-main>
         </el-container>
     </el-container>
 </template>
 
 <script>
 export default {
-    beforeCreate(){
-        const token =sessionStorage.getItem('token');
-        if(!token){
-            //未登录提示用户
-            this.$message.warning('请先登录');
-            this.$router.push('/login');
-        }
-    },
-    methods:{
-        handleLoginout(){
-            //清除token
-            sessionStorage.clear();
-            //提示退出成功
-            this.$message.success('退出成功');
-            // 跳转到登录页面
-            this.$router.push('/login');
-        }
+  beforeCreate() {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      // 未登录提示用户
+      this.$message.warning('请先登录');
+      this.$router.push('/login');
     }
+  },
+  methods: {
+    handleLoginout() {
+      // 清除token
+      sessionStorage.clear();
+      // 提示退出成功
+      this.$message.success('退出成功');
+      // 跳转到登录页面
+      this.$router.push('/login');
+    }
+  }
 };
 </script>
 
@@ -105,7 +107,6 @@ export default {
 .el-main {
     background-color: #E9EEF3;
     color: #333;
-    text-align: center;
 }
 .el-header{
     background-color: #B3C0D1;

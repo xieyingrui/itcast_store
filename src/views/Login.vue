@@ -35,8 +35,8 @@ export default {
           if (status === 200) {
             // 成功
             this.$message.success(msg);
-            sessionStorage.setItem('token',response.data.data.token);
-            //跳转到home页面
+            sessionStorage.setItem('token', response.data.data.token);
+            // 跳转到home页面
             this.$router.push('/');
           } else {
             // 失败
