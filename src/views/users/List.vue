@@ -17,6 +17,7 @@
             border
             stripe
             :data="list"
+            v-loading="loading"
             style="width: 100%">
             <el-table-column
                 type="index"
@@ -37,13 +38,31 @@
                 label="电话">
             </el-table-column>
             <el-table-column
-                prop="mg_state"
+                label="日期">
+                <template  slot-scope="scope">
+                    {{scope.row.create_time |fmDate('YYYY-MM-DD')}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 label="用户状态"
                 width="90">
+                <template slot-scope="scope">
+                    <el-switch
+                        v-model="scope.row.mg_state"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949">
+                    </el-switch>
+                </template>
             </el-table-column>
             <el-table-column
                 label="操作"
-                width="180">
+                width="240"
+                >
+                <template slot-scope="scope">
+                <el-button size="mini" type="primary" icon="el-icon-edit" plain></el-button>
+                <el-button size="mini" type="danger" icon="el-icon-delete" plain></el-button>
+                <el-button size="mini" type="success" icon="el-icon-check" plain></el-button>                
+            </template>
             </el-table-column>
         </el-table>
     </el-card>
@@ -53,7 +72,8 @@
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      loading: true
     };
   },
   created() {
@@ -71,6 +91,7 @@ export default {
         }
       })
         .then(response => {
+          this.loading = false;
           const {meta: {msg, status}} = response.data;
           if (status === 200) {
             const {data: {users}} = response.data;
