@@ -144,7 +144,7 @@ export default {
       total: 0,
       searchVal: '',
       addUserDialogFormVisible: false,
-      editUserDialogFormVisible:false,
+      editUserDialogFormVisible: false,
       formData: {
         username: '',
         password: '',
@@ -274,30 +274,30 @@ export default {
         this.formData[k] = '';
       }
     },
-    //编辑方法
-    handleOpenEditDialog(user){
-        //打开编辑用户信息框
-        this.editUserDialogFormVisible = true;
-        //设置formData的值
-        this.formData.username=user.username;
-        this.formData.email=user.email;
-        this.formData.mobile=user.mobile;
-        //点击的时候获得当前点击用户的id
-        this.formData.id=user.id;
+    // 编辑方法
+    handleOpenEditDialog(user) {
+      // 打开编辑用户信息框
+      this.editUserDialogFormVisible = true;
+      // 设置formData的值
+      this.formData.username = user.username;
+      this.formData.email = user.email;
+      this.formData.mobile = user.mobile;
+      // 点击的时候获得当前点击用户的id
+      this.formData.id = user.id;
     },
-    async handleEdit(){
-        const response=await this.$http.put(`users/${this.formData.id}`,{
-            email:this.formData.email,
-            mobile:this.formData.mobile
-        });
-        const {meta:{status,msg}}=response.data;
-        if(status===200){
-            this.editUserDialogFormVisible = false;
-            this.$message.success(msg);
-            this.loadData();
-        }else{
-            this.$message.error(msg);
-        }
+    async handleEdit() {
+      const response = await this.$http.put(`users/${this.formData.id}`, {
+        email: this.formData.email,
+        mobile: this.formData.mobile
+      });
+      const {meta: {status, msg}} = response.data;
+      if (status === 200) {
+        this.editUserDialogFormVisible = false;
+        this.$message.success(msg);
+        this.loadData();
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
