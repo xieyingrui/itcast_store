@@ -9,9 +9,9 @@ import '@/assets/css/index.css';
 import MyHttp from '@/plugins/MyHttp.js';
 import Moment from 'moment';
 
-Vue.filter('fmDate',(value,fmstr)=>{
+Vue.filter('fmDate', (value, fmstr) => {
   return Moment(value).format(fmstr);
-})
+});
 
 // 注册MyHttp插件
 Vue.use(MyHttp);
