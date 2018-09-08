@@ -62,7 +62,7 @@
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" icon="el-icon-edit" plain  @click="handleOpenEditDialog(scope.row)"></el-button>
                     <el-button size="mini" type="danger" icon="el-icon-delete" plain @click="handleDelete(scope.row.id)"></el-button>
-                    <el-button size="mini" type="success" icon="el-icon-check" plain></el-button>
+                    <el-button size="mini" @click="handleOpenSetRoleDialog(scope.row)" type="success" icon="el-icon-check" plain></el-button>
             </template>
             </el-table-column>
         </el-table>
@@ -130,6 +130,44 @@
             <el-button type="primary" @click="handleEdit">确 定</el-button>
             </div>
         </el-dialog>
+
+        <!-- 设置角色对话框 -->
+        <el-dialog title="角色分配" :visible.sync="setRoleDialogFormVisible" @close="handleClose">
+            <el-form
+            label-width="100px"
+            :model="formData">
+              <el-form-item label="当前用户">
+                  {{formData.username}}
+              </el-form-item>
+              <el-form-item label="请选择角色">
+                  <!-- 下拉框currentRoleId绑定的是value的值 -->
+                  <el-select v-model="currentRoleId" placeholder="请选择">
+                    <el-option
+                      label="请选择"
+                      :value="-1" disabled>
+                    </el-option>
+                    <!-- <el-option
+                      label="大学"
+                      value="1">
+                    </el-option>
+                    <el-option
+                      label="小学"
+                      value="2">
+                    </el-option> -->
+                    <el-option
+                      v-for="item in options"
+                      :key="item.id"
+                      :label="item.roleName"
+                      :value="item.id">
+                    </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="setRoleDialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="handleSetRole">确 定</el-button>
+            </div>
+        </el-dialog>
     </el-card>
 </template>
 
@@ -145,12 +183,16 @@ export default {
       searchVal: '',
       addUserDialogFormVisible: false,
       editUserDialogFormVisible: false,
+      setRoleDialogFormVisible: false,
       formData: {
         username: '',
         password: '',
         email: '',
         mobile: ''
       },
+      currentRoleId: -1,
+      // 绑定下拉框的数据
+      options: [],
       rules: {
         username: [
           {required: true, message: '请输入用户名', trigger: 'blur'},
@@ -168,10 +210,10 @@ export default {
   },
   methods: {
     async loadData() {
-      // 拿到token
-      const token = sessionStorage.getItem('token');
-      // 设置请求头
-      this.$http.defaults.headers.common['Authorization'] = token;
+      // // 拿到token
+      // const token = sessionStorage.getItem('token');
+      // // 设置请求头
+      // this.$http.defaults.headers.common['Authorization'] = token;
       const response = await this.$http.get(`users?pagenum=${this.pagenum}&pagesize=${this.pagesize}&query=${this.searchVal}`);
       // 请求结束设置loading
       this.loading = false;
@@ -235,20 +277,6 @@ export default {
         this.$message.error(msg);
       }
     },
-    // async handleAdd() {
-    //   const response = await this.$http.post('users', this.formData);
-    //   const {meta: {status, msg}} = response.data;
-    //   if (status === 201) {
-    //     this.$message.success(msg);
-    //     // 刷新表格
-    //     this.loadData();
-    //     // 关闭对话框
-    //     this.addUserDialogFormVisible = false;
-    //     // 清空文本框
-    //   } else {
-    //     this.$message.error(msg);
-    //   }
-    // },
     handleAdd() {
       this.$refs.form.validate(async(valid) => {
         if (!valid) {
@@ -269,10 +297,12 @@ export default {
         }
       });
     },
+    // 关闭对话框
     handleClose() {
       for (let k in this.formData) {
         this.formData[k] = '';
       }
+      this.currentRoleId = -1;
     },
     // 编辑方法
     handleOpenEditDialog(user) {
@@ -296,6 +326,35 @@ export default {
         this.$message.success(msg);
         this.loadData();
       } else {
+        this.$message.error(msg);
+      }
+    },
+    // 分配角色方法
+    async handleOpenSetRoleDialog(user) {
+      this.setRoleDialogFormVisible = true;
+      this.formData.username = user.username;
+      // 发送请求获取所有的角色
+      const response = await this.$http.get('roles');
+      this.options = response.data.data;
+      // 设置当前用户默认的角色
+      // 根据用户id查询用户信息
+      const res = await this.$http.get(`users/${user.id}`);
+      this.currentRoleId = res.data.data.rid;
+      // 记录用户id
+      this.formData.id = user.id;
+    },
+    // 设置用户角色
+    async handleSetRole() {
+      const res = await this.$http.put(`users/${this.formData.id}/role`, {
+        rid: this.currentRoleId
+      });
+      const {meta: {msg, status}} = res.data;
+      if (status === 200) {
+        // 成功
+        this.$message.success(msg);
+        this.setRoleDialogFormVisible = false;
+      } else {
+        // 失败
         this.$message.error(msg);
       }
     }
