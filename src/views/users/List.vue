@@ -17,7 +17,6 @@
             border
             stripe
             :data="tableData"
-            v-loading="loading"
             style="width: 100%">
             <el-table-column
                 type="index"
@@ -176,7 +175,7 @@ export default {
   data() {
     return {
       tableData: [],
-      loading: true,
+      // loading: true,
       pagenum: 1,
       pagesize: 2,
       total: 0,
@@ -216,7 +215,7 @@ export default {
       // this.$http.defaults.headers.common['Authorization'] = token;
       const response = await this.$http.get(`users?pagenum=${this.pagenum}&pagesize=${this.pagesize}&query=${this.searchVal}`);
       // 请求结束设置loading
-      this.loading = false;
+      // this.loading = false;
       const {meta: {status, msg}} = response.data;
       if (status === 200) {
         this.tableData = response.data.data.users;
