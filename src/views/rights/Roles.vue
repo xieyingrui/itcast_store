@@ -14,7 +14,17 @@
         <el-table-column
            type="expand">
             <template slot-scope="scope">
-                hello
+                <!-- 一级权限 -->
+                <el-row
+                v-for="level1 in scope.row.children"
+                :key="level1.id">
+                    <el-col :span="4">
+                        <!-- 显示一级权限的名字 -->
+                        <el-tag
+                        closeable>{{ level1.authName }}</el-tag>
+                    </el-col>
+                    <el-col :span="20"></el-col>
+                </el-row>
             </template>
         </el-table-column>
         <el-table-column
@@ -24,12 +34,12 @@
         <el-table-column
             prop="roleName"
             label="角色名称"
-            width="180">
+            width="300">
         </el-table-column>
         <el-table-column
             prop="roleDesc"
             label="角色描述"
-            width="180">
+            width="300">
         </el-table-column>
         <el-table-column
             label="操作">
