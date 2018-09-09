@@ -58,7 +58,11 @@ export default {
       const response = await this.$http.get('roles');
       const {meta: {msg, status}} = response.data;
       if (status === 200) {
-
+        // 成功
+        this.tableData = response.data.data;
+      } else {
+        // 失败
+        this.$message.error(msg);
       }
     }
   }
