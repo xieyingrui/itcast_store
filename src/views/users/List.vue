@@ -362,9 +362,6 @@ export default {
 </script>
 
 <style>
-    .card{
-        height: 100%;
-    }
     .row {
         margin:20px 0;
     }
